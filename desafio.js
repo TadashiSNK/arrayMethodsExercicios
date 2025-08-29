@@ -1,48 +1,44 @@
 import { promises as fs } from 'fs'
-import readline from 'readline'
+
 
 async function pegaDados() {
-    const dados = JSON.parse(await fs.readFile("./people.json"));
+    const dados = JSON.parse(await fs.readFile("./times.json"));
     return dados
-}
+} ///// Exercicio 1
 
 
-
-
-
-async function login(){
-    
+async function nomesDosTimes(){
     const dados = await pegaDados()
 
-    const arrombado = dados.find((item) => {
-        return item.name.first.toLowerCase() == "paulina"
+    dados.forEach(item => {
+        console.log(item.nome)
+    });
+} ////// Exercicio 2
+
+async function timesComS(){
+    const dados = await pegaDados()
+
+
+    dados.forEach(item => {
+       if (item.detalhes.nome_oficial.toLowerCase().startsWith("s")){
+        console.log(item.detalhes.nome_oficial)
+       } 
+    });
+} ///// Exercicio 3
+
+async function nomeslenght(){
+    const dados = await pegaDados()
+
+
+    dados.sort( (item) => {
+        
     })
-
-    // console.log(arrombado.name.first.toLowerCase() + "." + arrombado.name.last.toLowerCase() + "@example.com")
-
-    if(arrombado.name.first.toLowerCase() + "." + arrombado.name.last.toLowerCase() + "@example.com")
-        console.log(arrombado.map((item) => {
-    return{
-    "Nome":arrombado.name,
-    "Email": arrombado.email,
-    "idade": arrombado.age
-}
-    }
-))
-
-    // if(isEmailValid && isPasswordValid){
-    //     console.log("Login realizado com sucesso")
-    // }
-    // else{
-    //     console.log("Email ou senha incorretos.")
-    // }
-
 }
 
-login()
 
 
 
 
 
-
+// nomesDosTimes()
+// timesComS()
