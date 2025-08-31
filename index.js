@@ -1,4 +1,10 @@
 import { promises as fs } from 'fs'
+import rl from 'readline'
+
+reader = rl.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
 
 async function pegaDados() {
     const dados = JSON.parse(await fs.readFile("./people.json"));

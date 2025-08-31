@@ -30,13 +30,18 @@ async function nomeslenght(){
     const dados = await pegaDados()
 
 
-    dados.sort( (a,b) => {
-        a.detalhes.estadio.nome.localeCompare(b.detalhes.estadio.nome)
-    } ).map((item)=>{
-        return console.log(item.detalhes.estadio.nome)
+    let newList = dados.map((item) => {
+        return{
+            "nome": item.detalhes.estadio.nome,
+        }
     })
 
-    // console.log(dados)
+    newList.sort((a,b) => {
+        return a.nome.length - (b.nome.length)
+    })
+
+    console.log(newList)
+
 } ///// Exercicio 4
 
 
@@ -48,6 +53,7 @@ async function nomeCapacidadeLocal(){
         if(item.detalhes.localizacao.cidade.toLowerCase().startsWith("são paulo")){
             console.log(`Nome do estádio: ${item.detalhes.estadio.nome}`)
             console.log(`Capacidade: ${item.detalhes.estadio.capacidade}`)
+            console.log(`Cidade: ${item.detalhes.localizacao.cidade}`)
             console.log("--------------")
         }
     });
@@ -58,8 +64,10 @@ async function nomeCapacidadeLocal(){
 async function estadiosRS7letras(){
     const dados = await pegaDados()
 
+
+
     dados.forEach(item => {
-        if (item.nome.length > 7)
+        if (item.nome.length > 7 && item.detalhes.localizacao.estado == "RS")
             console.log(item.nome)
         
     });
@@ -68,19 +76,20 @@ async function estadiosRS7letras(){
 
 async function nomeEtitulos(){
     const dados = await pegaDados()
-    var totalTitulos
+    let totalTitulos = 0
 
-    const titulos = dados.forEach(item => {
 
-        if(item.historico.pincipais_titulos != undefined)
-            item.historico.pincipais_titulos.forEach(titulo => {
-                var add = titulo.quantidade
-                totalTitulos += add
-        });
+    let newList = dados.map(item => {
+        let totalTitulos = 0
+                item.historico.principais_titulos.forEach(objeto => {
+                    totalTitulos += objeto.quantidade
+                })
+        return{
+            "Nome": item.nome,
+            "Total de titulos": totalTitulos
+        }
     })
-
-
-    console.log(totalTitulos)
+    console.log(newList)
 } ///// Exercicio 7
 
 async function nomeEstadioMascote(){
@@ -94,7 +103,8 @@ async function nomeEstadioMascote(){
         return{
         "Time": item.nome,
         "Estádio": item.detalhes.estadio.nome,
-        "Mascote": item.mascote
+        "Mascote": item.mascote,
+        "Capacidade": item.detalhes.estadio.capacidade
         }
     })
 
@@ -102,16 +112,43 @@ async function nomeEstadioMascote(){
 
 } ///// Exercicio 8
 
+async function timesIdolos(){
+    const dados = await pegaDados()
 
 
+    const newList = dados.map(item => {
+        return{
+            "Time": item.nome,
+            "Idolos": item.historico.maiores_idolos.sort()
+        }
+    })
+
+    console.log(newList)
+} ///// Exercicio 9
+
+async function NdeTimesporEstado(){
+    const dados = await pegaDados()
+    let siglasEstados = {}
 
 
+    dados.forEach(item => {
+        if (!(item.detalhes.localizacao.estado in siglasEstados)){
+            siglasEstados[item.detalhes.localizacao.estado] = 1;
+        } else {
+            siglasEstados[item.detalhes.localizacao.estado] += 1;
+        }
+    })
+
+    console.log(siglasEstados)
+} ///// Exercicio 10
+
+// pegaDados()
 // nomesDosTimes()
 // timesComS()
-// nomeslenght()XX
+// nomeslenght()
 // nomeCapacidadeLocal()
 // estadiosRS7letras()
-// nomeEtitulos() XX
+// nomeEtitulos()
 // nomeEstadioMascote()
-
-
+// timesIdolos()
+// NdeTimesporEstado()
